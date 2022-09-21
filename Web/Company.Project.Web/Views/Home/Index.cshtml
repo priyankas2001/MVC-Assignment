@@ -1,0 +1,178 @@
+﻿@model IList<Company.Project.Web.Models.EventViewModel>
+
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> _signInManager
+@inject UserManager<IdentityUser> _userManager
+
+@{
+    ViewData["Title"] = "Home Page"; 
+    }
+@{ 
+    var user = await _userManager.GetUserAsync(User);
+    var email = user != null ? user.Email : ""; 
+    }
+
+<div class="container">
+    <div class="text-center">
+        <h1 class="display-5 fw-bold lh-1 mb-5">Welcome to book reading Events</h1>
+        <p class="lead text-muted">
+            In this book Reading event of ours, you can join us and study many new books.
+            you can enjoy the books written by many lentil warriors.
+        </p>
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+
+            </ol>
+            <div class="carousel-inner" data-interval="10000">
+                <div class="carousel-item active" data-interval="10000">
+                    <img class="d-block w-100" src="~/images/reader/event2.jpg" alt="First slide" style="height: 400px;">
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block w-100" src="~/images/reader/event3.jpg" alt="Second slide" style="height: 400px;">
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block w-100" src="~/images/reader/event4.jpg" alt="Third slide" style=" height: 400px;">
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block w-100" src="~/images/reader/event1.jpg" alt="Fourth slide" style=" height: 400px;">
+                </div>
+            </div>
+        </div>
+        <div class="row pt-3">
+            <div class="rounded-left  col-md-6 " style="background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%); " ;>
+                <h4 class="mt-4"><a class="text-dark mt-2" href="#previousEvents"> Previous Events</a></h4>
+                <div class="row" id="previousEvents">
+                    @if (email == "myadmin@bookevents.com")
+                    {
+                        @foreach (var _event in Model)
+                        {
+                            @if (_event.Date < DateTime.Now)
+                            {
+                                <partial name="_EventDetailsIndexPage" model="@_event" />
+
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        @foreach (var _event in Model)
+                        {
+                            @if (_event.Date < DateTime.Now && _event.EventType.Equals("Public"))
+                            {
+                                <partial name="_EventDetailsIndexPage" model="@_event" />
+
+                            }
+
+                        }
+                    }
+
+                </div>
+
+            </div>
+            <div class="col-md-6 rounded-right " style="background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%); ">
+                <h4 class="mt-4"><a class="text-dark" href="#upcomingEvents">Upcoming Events</a></h4>
+                <div class="row" id="upcomingEvents">
+                    @if (email == "myadmin@bookevents.com")
+                    {
+                        @foreach (var _event in Model)
+                        {
+                            @if (_event.Date > DateTime.Now)
+                            {
+                                <partial name="_EventDetailsIndexPage" model="@_event" />
+
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        @foreach (var _event in Model)
+                        {
+                            @if (_event.Date > DateTime.Now && _event.EventType.Equals("Public"))
+                            {
+                                <partial name="_EventDetailsIndexPage" model="@_event" />
+
+                            }
+
+                        }
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+@*
+<div class="container-fluid">
+    <div class="text-center">
+        <h1 class="display-4 text-danger font-weight-bold">Welcome!!</h1>
+        <div class="row">
+            <div class="col-md-6 bg-info">
+                <h4><a class="text-dark " href="#previousEvents"> Previous Events</a></h4>
+                <div class="row" id="previousEvents">
+                    @if (email == "myadmin@bookevents.com")
+                     {
+                        @foreach (var _event in Model)
+                         {
+                            @if (_event.Date < DateTime.Now)
+                             {
+                                <partial name="_EventDetailsIndexPage" model="@_event" />
+                             }
+                         } 
+                     }
+                     else
+                     {
+                         @foreach (var _event in Model)
+                          {
+                             @if (_event.Date < DateTime.Now && _event.EventType.Equals("Public"))
+                              {
+                                 <partial name="_EventDetailsIndexPage" model="@_event" />
+                              }
+                          }
+                     }
+
+                </div>
+
+            </div>
+            <div class="col-md-6 bg-success">
+                <h4><a class="text-dark " href="#upcomingEvents">Upcoming Events</a></h4>
+                <div class="row" id="upcomingEvents">
+                    @if (email == "myadmin@bookevents.com")
+                     {
+                         @foreach (var _event in Model)
+                          {
+                            @if (_event.Date > DateTime.Now)
+                             {
+                                <partial name="_EventDetailsIndexPage" model="@_event" />
+                             }
+                          } 
+                     }
+                     else
+                     {
+                         @foreach (var _event in Model)
+                          {
+                            @if (_event.Date > DateTime.Now && _event.EventType.Equals("Public"))
+                             {
+                                <partial name="_EventDetailsIndexPage" model="@_event" />
+                             }
+                          }
+                     }
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>*@
+
